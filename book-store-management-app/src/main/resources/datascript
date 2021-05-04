@@ -1,0 +1,97 @@
+	CREATE TABLE CUSTOMER (
+	customerId number(10) CONSTRAINTS customer_customerId_pk PRIMARY KEY,
+	email varchar2(30) CONSTRAINTS customer_email_un_nn UNIQUE NOT NULL, 
+	fullname  varchar2(20) CONSTRAINTS customer_fullname_nn NOT NULL, 
+	password  varchar2(20) CONSTRAINTS customer_password_un_nn UNIQUE NOT NULL,
+	mobileNumber varchar2(10) CONSTRAINTS customer_mobileNumber_nn NOT NULL,
+	registerOn  date     CONSTRAINTS customer_registerOn_nn NOT NULL
+	);
+		
+	 INSERT INTO Customer
+	 VALUES(1,'arpitjain.aj3012@gmail.com','Arpit Jain','arpit123','9313666807','20-jan-2021','11b block f sector 64','Noida','INDIA','210358');
+	 
+	 INSERT INTO Customer
+	 VALUES(2,'kashif@gmail.com','Mohd Kashif','kashif123','9712558799','12-jan-2021','22c block wp','Pitampura','INDIA','110034');
+		 
+	  INSERT INTO Customer
+	 VALUES(3,'abhijeet@gmail.com','Abhijeet Singh','abhijeet123','9546461798','21-feb-2021','House no.-5 Street 6','Toronto','CANADA','M4B 1B3');
+		 
+		
+		 
+	CREATE TABLE CATEGORY (
+	categoryId number(10)     CONSTRAINTS category_categoryId_pk   PRIMARY KEY,
+	categoryName varchar2(30) CONSTRAINTS category_categoryName_un UNIQUE);
+	
+	INSERT INTO Category (categoryId,categoryName)
+	VALUES(100,'adventure');
+	
+	INSERT INTO Category (categoryId,categoryName)
+	VALUES(101,'contemporary');
+	
+	INSERT INTO Category (categoryId,categoryName)
+	VALUES(102,'history');
+	
+	CREATE TABLE BOOKS (
+	bookId      number(10)    CONSTRAINTS books_bookId_pk PRIMARY KEY,
+	title       varchar2(30)  CONSTRAINTS books_title_un_nn UNIQUE NOT NULL,
+	author      varchar2(30)  CONSTRAINTS books_author_nn NOT NULL,
+	description varchar2(30)  CONSTRAINTS books_description_nn NOT NULL,
+	isbn        varchar2(30)  CONSTRAINTS books_isbn_nn NOT NULL,
+	price       number(10,2)  CONSTRAINTS books_price_nn NOT NULL,
+	pubDate     date          CONSTRAINTS books_pubDate_nn NOT NULL,
+	lastUpDate  date          CONSTRAINTS books_lastUpDate_nn NOT NULL,
+	categoryId  number(10)    CONSTRAINTS books_category_fk REFERENCES category(categoryId)
+	);
+	 
+	INSERT INTO Books(bookId,title,author,description,isbn,price,pubDate,lastUpDate,categoryId)
+	VALUES (200,'The Other Hand','Chris Cleave','story about nigerian seeker','3456789432908',500, '07-aug-2008','30-aug-2017',101);
+	
+	 CREATE TABLE BOOKORDER (
+	    orderId number(10) CONSTRAINTS BOOKORDER_orderId_pk PRIMARY KEY,
+	    orderDate  date     CONSTRAINTS BOOKORDER_orderDate_nn NOT NULL,
+	    orderTotal number(10,2)  CONSTRAINTS BOOKORDER_orderTotal_nn NOT NULL,
+	    status varchar2(20)  CONSTRAINTS BOOKORDER_status_nn NOT NULL,
+	    paymentMethod  varchar2(20)  CONSTRAINTS BOOKORDER_paymentMethod_nn NOT NULL,
+	    recipientName  varchar2(20)  CONSTRAINTS BOOKORDER_recipientName_nn NOT NULL,
+	    recipientPhone  varchar2(20)  CONSTRAINTS BOOKORDER_recipientPhone_un_nn UNIQUE NOT NULL,
+	     customerId number(10) CONSTRAINTS BOOKORDER_customerId_fk  REFERENCES Customer(customerId)
+		);
+		
+		
+		INSERT INTO BOOKORDER (orderId,orderDate,orderTotal,status,paymentMethod,recipientName,recipientPhone,customerId)
+		 VALUES(077,'20-jan-2021',1000,'pending','online','kashif',9900009900,1719210162);
+		 
+		
+		  CREATE TABLE USERS(
+		userId number(10) CONSTRAINTS user_userid_pk PRIMARY KEY,
+		email varchar2(30) CONSTRAINTS user_email_un_nn UNIQUE NOT NULL,
+		password  varchar2(20) CONSTRAINTS user_password_un_nn UNIQUE NOT NULL,
+		role varchar2(15) CONSTRAINTS user_role_un_nn UNIQUE NOT NULL);
+		
+		 INSERT INTO USER (userId,email,password,role)
+		 VALUES(100,'abhijeet0110@gmail.com','abhi0110','Manager');
+		 
+		INSERT INTO USER (userId,email,password,role)
+		 VALUES(101,'bharat234@gmail.com','bht234','Sub-Manager');
+		 
+		 INSERT INTO USER (userId,email,password,role)
+		 VALUES(102,'tanu7876@gmail.com','tata646','Service');
+		
+	 CREATE TABLE REVIEW (
+		reviewId number(10) CONSTRAINTS review_reviewId_pk PRIMARY KEY, 
+		headline  varchar2(20) CONSTRAINTS review_headline_nn NOT NULL, 
+		comments  varchar2(50) CONSTRAINTS review_comment_un_nn UNIQUE NOT NULL,
+		rating varchar2(10) CONSTRAINTS review_rating_nn NOT NULL,
+		reviewOn  date     CONSTRAINTS review_reviewOn_nn NOT NULL,
+		bookId number(10) CONSTRAINTS review_bookId_fk  REFERENCES books(bookId),
+		customerId number(10) CONSTRAINTS review_customerId_fk  REFERENCES customer(customerId)
+		);
+		
+		 INSERT INTO Review
+		 VALUES(21,'wow maza aa gaya padke','best book ever','5star','20-jan-2021',200,1);
+		 
+		  INSERT INTO Review
+		 VALUES(22,'go for it ','changed my life ','5star','21-feb-2021',200,1);
+		 
+		  INSERT INTO Review
+		 VALUES(32,'worst book ever','refund my money back','1star','13-mar-2021',200,2);
